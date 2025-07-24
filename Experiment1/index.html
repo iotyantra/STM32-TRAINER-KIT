@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
+</head>
+
+<body>
+
+<header>
+    <img src="images/logo.png" alt="Lab Logo" style="height: 150px; vertical-align: middle;">
+    <h2 style="display: inline-block; margin-left: 20px;">STM32F103 ARM CORTEX M3 :: Interactive Lab Manual</h2>
+<h3 style="display: inline-block; margin-left: 15px;">E-YANTRA TECHNOLOGIES</h3>
+
+    <p>Offline HTML Version</p>
+</header>
+
+
+    
+    <nav class="topnav">
+        <button onclick="scrollToSection('introduction')">Introduction</button>
+        <button onclick="scrollToSection('materials')">Materials</button>
+        <button onclick="scrollToSection('circuit')">Circuit</button>
+        <button onclick="scrollToSection('code')">Code</button>
+        <button onclick="scrollToSection('results')">Results</button>
+        <button onclick="scrollToSection('conclusion')">Conclusion</button>
+    </nav>
+
+    <main>
+        <section id="introduction">
+            <h2>1. Introduction</h2>
+
+            <p style="font-family: 'comic sans MS', sans-serif; font-weight: bold; font-style: italic; font-size: 16px;">This manual includes STM32F103 ARM CORTEX M3 Arduino IDE-based Embedded Systems lab experiments with code, circuit diagrams, images, and outcomes.</p>
+        </section>
+
+        <section id="materials">
+            <h2>2. Materials and Tools</h2>
+            <ul>
+                <li>STM32F103C8T6 / Arduino Due Board</li>
+                <li>Breadboard, LEDs, Resistors</li>
+                <li>Switches, Buzzers, Keypad, LCD</li>
+                <li>Stepper/DC Motors</li>
+                <li>DHT11, Flame Sensor, Ultrasonic Sensor</li>
+                <li>RTC Module, Jumper Wires, USB Cable</li>
+            </ul>
+        </section>
+
+        <section id="circuit">
+            <h2>3. Circuit Diagram</h2>
+            <p>(Insert circuit diagram image here)</p>
+            <img src="images/circuit_placeholder.png" alt="Circuit Diagram" width="800">
+        </section>
+
+        <section id="code">
+            <h2>4. Code Snippet</h2>
+
+
+<pre><code>
+<pre>
+
+<font color="#434f54">&#47;&#47; THIS CODE CONTROLS THE DC MOTOR CONNECTED TO ON BOARD H-BRIDGE IC L293D THROUGH</font>
+<font color="#434f54">&#47;&#47; BUTTONS B1 AND B2, B1 CHANGES THE DIRECTION OF ROTATION , WHILE B2 MAKES ON AND OFF OF MOTOR.</font>
+<font color="#5e6d03">#define</font> <font color="#000000">PWM_PIN</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#00979c">PB0</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Motor PWM output</font>
+<font color="#5e6d03">#define</font> <font color="#000000">DIR_PIN</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#00979c">PB11</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Direction output (to NOT gate)</font>
+<font color="#5e6d03">#define</font> <font color="#000000">BTN_DEC</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#00979c">PC14</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Decrease button</font>
+<font color="#5e6d03">#define</font> <font color="#000000">BTN_INC</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#00979c">PC15</font> &nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Increase button</font>
+
+<font color="#00979c">int</font> <font color="#000000">pwmValue</font> <font color="#434f54">=</font> <font color="#000000">0</font><font color="#000000">;</font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Current motor speed (-255 to +255)</font>
+<font color="#00979c">const</font> <font color="#00979c">int</font> <font color="#d35400">step</font> <font color="#434f54">=</font> <font color="#000000">11</font><font color="#000000">;</font> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; Change in PWM per press (you can set to 5 or 25 for finer steps)</font>
+
+<font color="#00979c">void</font> <font color="#5e6d03">setup</font><font color="#000000">(</font><font color="#000000">)</font> <font color="#000000">{</font>
+ &nbsp;<font color="#d35400">pinMode</font><font color="#000000">(</font><font color="#000000">PWM_PIN</font><font color="#434f54">,</font> <font color="#00979c">OUTPUT</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#d35400">pinMode</font><font color="#000000">(</font><font color="#000000">DIR_PIN</font><font color="#434f54">,</font> <font color="#00979c">OUTPUT</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#d35400">pinMode</font><font color="#000000">(</font><font color="#000000">BTN_DEC</font><font color="#434f54">,</font> <font color="#00979c">INPUT</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;<font color="#d35400">pinMode</font><font color="#000000">(</font><font color="#000000">BTN_INC</font><font color="#434f54">,</font> <font color="#00979c">INPUT</font><font color="#000000">)</font><font color="#000000">;</font>
+<font color="#000000">}</font>
+
+<font color="#00979c">void</font> <font color="#5e6d03">loop</font><font color="#000000">(</font><font color="#000000">)</font> <font color="#000000">{</font>
+ &nbsp;
+ &nbsp;<font color="#5e6d03">if</font><font color="#000000">(</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">BTN_DEC</font><font color="#000000">)</font> <font color="#434f54">==</font> <font color="#00979c">LOW</font><font color="#000000">)</font><font color="#000000">{</font>
+ &nbsp;&nbsp;&nbsp;<font color="#d35400">delay</font><font color="#000000">(</font><font color="#000000">20</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;<font color="#5e6d03">if</font><font color="#000000">(</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">BTN_DEC</font><font color="#000000">)</font><font color="#434f54">==</font><font color="#00979c">LOW</font><font color="#000000">)</font><font color="#000000">{</font><font color="#5e6d03">while</font><font color="#000000">(</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">BTN_DEC</font><font color="#000000">)</font><font color="#434f54">==</font><font color="#00979c">LOW</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#d35400">digitalWrite</font><font color="#000000">(</font><font color="#000000">DIR_PIN</font><font color="#434f54">,</font><font color="#434f54">!</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">DIR_PIN</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font><font color="#000000">}</font>
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47;TOGGLE ROTATION</font>
+ &nbsp;&nbsp;<font color="#000000">}</font>
+ &nbsp;<font color="#5e6d03">if</font><font color="#000000">(</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">BTN_INC</font><font color="#000000">)</font> <font color="#434f54">==</font> <font color="#00979c">LOW</font><font color="#000000">)</font><font color="#000000">{</font>
+ &nbsp;&nbsp;&nbsp;<font color="#434f54">&#47;&#47; ON&#47;OFF</font>
+ &nbsp;&nbsp;<font color="#d35400">delay</font><font color="#000000">(</font><font color="#000000">20</font><font color="#000000">)</font><font color="#000000">;</font>
+ &nbsp;&nbsp;&nbsp;<font color="#5e6d03">if</font><font color="#000000">(</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">BTN_INC</font><font color="#000000">)</font><font color="#434f54">==</font><font color="#00979c">LOW</font><font color="#000000">)</font><font color="#000000">{</font><font color="#5e6d03">while</font><font color="#000000">(</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">BTN_INC</font><font color="#000000">)</font><font color="#434f54">==</font><font color="#00979c">LOW</font><font color="#000000">)</font><font color="#000000">;</font><font color="#d35400">digitalWrite</font><font color="#000000">(</font><font color="#000000">PWM_PIN</font><font color="#434f54">,</font><font color="#434f54">!</font><font color="#d35400">digitalRead</font><font color="#000000">(</font><font color="#000000">PWM_PIN</font><font color="#000000">)</font><font color="#000000">)</font><font color="#000000">;</font><font color="#000000">}</font>
+ &nbsp;<font color="#000000">}</font>
+<font color="#000000">}</font>
+ &nbsp;
+
+</pre>            </code></pre>
+
+
+        </section>
+
+        <section id="results">
+            <h2>5. Results</h2>
+            <p>Expected outcomes: Blinking LEDs, sensor readings on LCD, motor rotation, etc.</p>
+        </section>
+
+        <section id="conclusion">
+            <h2>6. Conclusion</h2>
+            <p>This concludes the STM32/Arduino Due training. Each experiment builds core embedded skills.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 STM32 Lab Manual |E-YANTRA TECHNOLOGIES|.  All rights reserved.</p>
+    </footer>
+</body>
+</html>
